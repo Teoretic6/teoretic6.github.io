@@ -6,7 +6,7 @@ h1 {
     color: #1946ba; 
 }
 
-div.all_quotes_box {
+#all_quotes_box {
     border: 1px solid #F5F5F5;
     padding-left: 5px;
     padding-bottom: 15px;
