@@ -1,10 +1,36 @@
 var quotes_arr = ["test1", "test2", "test3", "test4"];
 var curr_quote = 0;
 
-window.onload = function() {
-    add_quote();
+// Load external JSON without using jQuery
+function loadJSON(path, success, error)
+{
+    var request = new XMLHttpRequest();
+    request.open('GET', 'https://raw.githubusercontent.com/4skinSkywalker/Database-Quotes-JSON/master/quotes.json', true);
+
+    request.onload = function() 
+    {
+        if (request.status >= 200 && request.status < 400) 
+        {
+            // Success!
+            var data = JSON.parse(request.responseText);
+        } 
+        else 
+        {
+            // We reached our target server, but it returned an error
+        }
+    };
+
+    request.onerror = function() {
+          // There was a connection error of some sort
+    };
+    
+    request.send();
 }
 
+window.onload = function() {
+    loadJSON();
+    add_quote();
+}
 
 function div_comparer(a, b) {
     if (a.innerHTML < b.innerHTML) {
