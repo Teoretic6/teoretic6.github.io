@@ -1,5 +1,6 @@
 var quotes_arr = ["test1", "test2", "test3", "test4"];
 var quotes_dict = {};
+var data;
 var curr_quote = 0;
 
 // Load external JSON without using jQuery
@@ -13,8 +14,10 @@ function loadJSON(path, success, error)
         if (request.status >= 200 && request.status < 400) 
         {
             // Success!
-            var data = JSON.parse(request.responseText);
-            return data;
+            data = JSON.parse(request.responseText);
+            
+            fill_quotes_dict();
+            fill_select();
         } 
         else 
         {
@@ -33,9 +36,11 @@ function fill_select()
 {
     var select = document.getElementById("author_select");
     
-    for(var i = 0; i < options.length; i++) 
+    var authors = Object.keys(quotes_dict).sort(); 
+    
+    for(var i = 0; i < authors.length; i++) 
     {
-        var opt = options[i];
+        var opt = authors[i];
         var el = document.createElement("option");
         el.textContent = opt;
         el.value = opt;
@@ -43,25 +48,28 @@ function fill_select()
     }
 }
 
-function fill_quotes_dict( data )
+function fill_quotes_dict()
 {
     for( var i in data )
     {
-	if( quotes_dict[i.quoteAuthor] === undefined )
-            quotes_dict[i,quoteAuthor] = [];
-        quotes_dict[i,quoteAuthor].append(i.quoteText);
+        var q = data[i];
+        if( quotes_dict[q.quoteAuthor] === undefined )
+        {
+            quotes_dict[q.quoteAuthor] = [];
+        }
+        quotes_dict[q.quoteAuthor].push(q.quoteText);
     }
 }
 
 window.onload = function() {
-    var data = loadJSON();
+    loadJSON();
     
-    if( data !== undefined )
+    /*if( data !== undefined )
     {
-        fill_quotes_dict(data);
+        fill_quotes_dict();
     }
 
-//   fill_select();
+    fill_select();*/
     add_quote();
 }
 
