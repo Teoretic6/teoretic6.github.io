@@ -18,6 +18,7 @@ function loadJSON(path, success, error)
             
             fill_quotes_dict();
             fill_select();
+            add_quote();
         } 
         else 
         {
@@ -63,17 +64,10 @@ function fill_quotes_dict()
 
 window.onload = function() {
     loadJSON();
-    
-    /*if( data !== undefined )
-    {
-        fill_quotes_dict();
-    }
-
-    fill_select();*/
-    add_quote();
 }
 
-function div_comparer(a, b) {
+function div_comparer(a, b) 
+{
     if (a.innerHTML < b.innerHTML) {
         return -1;
     } else {
@@ -81,7 +75,8 @@ function div_comparer(a, b) {
     }
 }
 
-function change_curr_quotes() {
+function change_curr_quotes() 
+{
     var quotes_div_arr = document.getElementsByClassName("quote_box");
 
     for ( var i = 0; i < quotes_div_arr.length; ++i )
@@ -126,4 +121,20 @@ function add_quote() {
     document.getElementById("all_quotes_box").appendChild(new_div);
 }
 
- 
+function show_author_quotes()
+{
+    var author = document.getElementById("author_select").value;
+
+    var list_of_quotes = quotes_dict[author];
+
+    for( var i = 0; i < list_of_quotes.length; ++i )
+    {
+        var new_div = document.createElement("div");
+        new_div.className = "quote_box";
+        new_div.innerHTML = list_of_quotes[i];
+
+        document.getElementById("all_quotes_box").appendChild(new_div);
+    }
+
+    sort_quotes();
+}
