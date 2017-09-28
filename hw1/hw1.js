@@ -54,11 +54,17 @@ function fill_quotes_dict()
     for( var i in data )
     {
         var q = data[i];
-        if( quotes_dict[q.quoteAuthor] === undefined )
+        // Process empty field of an author
+        var author = q.quoteAuthor == "" ? "Unknown author" : q.quoteAuthor;
+        // Remove invalid characters
+        var text = q.quoteText.replace(/\uFFFD/g, '');
+        author = author.replace(/\uFFFD/g, '');
+
+        if( quotes_dict[author] === undefined )
         {
-            quotes_dict[q.quoteAuthor] = new Set();
+            quotes_dict[author] = new Set();
         }
-        quotes_dict[q.quoteAuthor].add(q.quoteText);
+        quotes_dict[author].add(text);
     }
 }
 
@@ -87,7 +93,7 @@ function change_curr_quotes()
         var author = get_random_author();
         var quote = get_random_quote_of_author( author );
 
-        quotes_div_arr[i].innerHTML = quote;
+        quotes_div_arr[i].innerHTML = "<b><i>" + author + "</b></i><pre>" + quote + "</pre>";
     }
 }
 
@@ -126,7 +132,7 @@ function add_quote()
 
     var new_div = document.createElement("div");
     new_div.className = "quote_box";
-    new_div.innerHTML = quote;
+    new_div.innerHTML = "<b><i>" + author + "</b></i><pre>" + quote + "</pre>";
 
     document.getElementById("all_quotes_box").appendChild(new_div);
 }
@@ -141,7 +147,7 @@ function show_author_quotes()
     set_of_quotes.forEach(function add_quotes(value) {
         var new_div = document.createElement("div");
         new_div.className = "quote_box";
-        new_div.innerHTML = value;
+        new_div.innerHTML = "<b><i>" + author + "</b></i><pre>" + value + "</pre>";
 
         document.getElementById("all_quotes_box").appendChild(new_div);
     });
