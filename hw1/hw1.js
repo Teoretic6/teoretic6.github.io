@@ -62,15 +62,18 @@ function fill_quotes_dict()
     }
 }
 
-window.onload = function() {
+window.onload = function()
+{
     loadJSON();
 }
 
 function div_comparer(a, b) 
 {
-    if (a.innerHTML < b.innerHTML) {
+    if (a.innerHTML < b.innerHTML)
+    {
         return -1;
-    } else {
+    } else
+    {
         return 1;
     }
 }
@@ -81,12 +84,10 @@ function change_curr_quotes()
 
     for ( var i = 0; i < quotes_div_arr.length; ++i )
     {
-        quotes_div_arr[i].innerHTML = quotes_arr[curr_quote];
+        var author = get_random_author();
+        var quote = get_random_quote_of_author( author );
 
-        if( curr_quote+1 >= quotes_arr.length )
-            curr_quote = 0;
-        else
-            curr_quote += 1;
+        quotes_div_arr[i].innerHTML = quote;
     }
 }
 
@@ -104,7 +105,8 @@ function sort_quotes() {
     all_quotes_div.appendChild(frag); 
 }
 
-function change_quotes() {
+function change_quotes()
+{
     change_curr_quotes();
 }
 
@@ -117,15 +119,14 @@ function clear_quotes() {
     }
 }
 
-function add_quote() {
+function add_quote()
+{
+    var author = get_random_author();
+    var quote = get_random_quote_of_author( author );
+
     var new_div = document.createElement("div");
     new_div.className = "quote_box";
-    new_div.innerHTML = quotes_arr[curr_quote];
-
-    if( curr_quote+1 >= quotes_arr.length )
-        curr_quote = 0;
-    else
-        curr_quote += 1;
+    new_div.innerHTML = quote;
 
     document.getElementById("all_quotes_box").appendChild(new_div);
 }
@@ -146,4 +147,18 @@ function show_author_quotes()
     });
 
     sort_quotes();
+}
+
+// Get random author from dictionary of quotes
+function get_random_author() {
+    var i = parseInt(Math.random() * (Object.keys(quotes_dict).length - 0) + 0);
+    return Object.keys(quotes_dict)[i];
+}
+
+// Get random quote of the given author from dictionary of quotes
+function get_random_quote_of_author( author ) {
+    var set = quotes_dict[author];
+    var ln = set.size;
+    var i = parseInt(Math.random() * (set.size - 0) + 0);
+    return Array.from(quotes_dict[author])[i];
 }
